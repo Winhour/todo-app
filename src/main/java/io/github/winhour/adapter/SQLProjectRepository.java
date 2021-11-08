@@ -1,0 +1,16 @@
+package io.github.winhour.adapter;
+
+import io.github.winhour.model.Project;
+import io.github.winhour.model.ProjectRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface SQLProjectRepository extends ProjectRepository, JpaRepository<Project, Integer> {
+
+    @Override
+    @Query("select distinct p from Project p join fetch p.steps")
+    List<Project> findAll();
+
+}
