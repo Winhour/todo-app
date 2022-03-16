@@ -8,15 +8,20 @@ import io.github.winhour.model.projection.GroupReadModel;
 import io.github.winhour.model.projection.GroupWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+/* Controller for Task Groups */
 
 @RestController
 @RequestMapping("/groups")
@@ -61,24 +66,34 @@ public class TaskGroupController {
 
     }*/
 
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    String displayGroups(Model model){
+        model.addAttribute("group", new GroupWriteModel());
+        return "groups";
+    }
 
-    @PostMapping
+
+    @ResponseBody
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<GroupReadModel> postGroup(@RequestBody @Valid GroupWriteModel toPost){
         GroupReadModel result = service.createGroup(toPost);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
 
     }
 
-    @GetMapping
+    @ResponseBody
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<GroupReadModel>> readAllGroups(){
         return ResponseEntity.ok(service.readAll());
     }
 
-    @GetMapping("/{id}")
+    @ResponseBody
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Task>> readAllTasksFromGroup(@PathVariable int id){
         return ResponseEntity.ok(repository.findAllByGroup_Id(id));
     }
 
+    @ResponseBody
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<?> toggleGroup(@PathVariable int id) {

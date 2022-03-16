@@ -4,9 +4,7 @@ import io.github.winhour.model.Task;
 import io.github.winhour.model.TaskGroup;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
@@ -15,9 +13,11 @@ public class GroupReadModel {
     private String description;
     private LocalDateTime deadline;             //deadline from the latest task in group
 
-    private Set<GroupTaskReadModel> tasks;
+    private List<GroupTaskReadModel> tasks = new ArrayList<>();
 
     public GroupReadModel(TaskGroup source) {
+
+
 
         id = source.getId();
 
@@ -30,7 +30,7 @@ public class GroupReadModel {
 
         tasks = source.getTasks().stream()
                 .map(GroupTaskReadModel::new)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
     }
 
@@ -58,11 +58,11 @@ public class GroupReadModel {
         this.deadline = deadline;
     }
 
-    public Set<GroupTaskReadModel> getTasks() {
+    public List<GroupTaskReadModel> getTasks() {
         return tasks;
     }
 
-    void setTasks(Set<GroupTaskReadModel> tasks) {
+    void setTasks(List<GroupTaskReadModel> tasks) {
         this.tasks = tasks;
     }
 }

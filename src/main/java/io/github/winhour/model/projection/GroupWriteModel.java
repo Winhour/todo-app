@@ -3,13 +3,22 @@ package io.github.winhour.model.projection;
 import io.github.winhour.model.Project;
 import io.github.winhour.model.TaskGroup;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupWriteModel {
 
     private String description;
-    private Set<GroupTaskWriteModel> tasks;
+
+    @Valid
+    private List<GroupTaskWriteModel> tasks = new ArrayList<>();
+
+    public GroupWriteModel() {
+        tasks.add(new GroupTaskWriteModel());
+    }
 
     public String getDescription() {
         return description;
@@ -19,11 +28,11 @@ public class GroupWriteModel {
         this.description = description;
     }
 
-    public Set<GroupTaskWriteModel> getTasks() {
+    public List<GroupTaskWriteModel> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<GroupTaskWriteModel> tasks) {
+    public void setTasks(List<GroupTaskWriteModel> tasks) {
         this.tasks = tasks;
     }
 
